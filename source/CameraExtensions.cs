@@ -7,7 +7,7 @@ public static class CameraExtensions
     public static CameraProjection GetProjection(this Camera camera)
     {
         Entity cameraEntity = camera;
-        CameraProjection component = cameraEntity.GetComponent<CameraProjection>();
+        CameraProjection component = cameraEntity.GetComponentRef<CameraProjection>();
         return component;
     }
 }
