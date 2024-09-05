@@ -14,7 +14,7 @@ namespace Cameras.Components
         }
 
         /// <summary>
-        /// Calculates raycast inputs from the given mouse positon.
+        /// Calculates raycast inputs from the given positon on the destination surface.
         /// </summary>
         public readonly (Vector3 origin, Vector3 direction) GetRayFromScreenPoint(Vector2 screenPoint)
         {

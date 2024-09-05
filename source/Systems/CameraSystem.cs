@@ -10,11 +10,11 @@ namespace Cameras.Systems
 {
     public class CameraSystem : SystemBase
     {
-        private readonly Query<IsCamera> cameraQuery;
+        private readonly ComponentQuery<IsCamera> cameraQuery;
 
         public CameraSystem(World world) : base(world)
         {
-            cameraQuery = new(world);
+            cameraQuery = new();
             Subscribe<CameraUpdate>(Update);
         }
 
@@ -26,7 +26,7 @@ namespace Cameras.Systems
 
         private void Update(CameraUpdate update)
         {
-            cameraQuery.Update();
+            cameraQuery.Update(world);
             foreach (var x in cameraQuery)
             {
                 uint cameraEntity = x.entity;
@@ -42,10 +42,12 @@ namespace Cameras.Systems
 
         private void CalculateProjection(uint cameraEntity, ref CameraProjection component)
         {
+            uint destinationEntity = default;
             if (world.TryGetComponent(cameraEntity, out CameraOutput cameraOutput))
             {
                 //destination may be gone if a window is destroyed
-                if (cameraOutput.destination == default || !world.ContainsEntity(cameraOutput.destination))
+                destinationEntity = world.GetReference(cameraEntity, cameraOutput.destinationReference);
+                if (destinationEntity == default || !world.ContainsEntity(destinationEntity))
                 {
                     return;
                 }
@@ -69,9 +71,10 @@ namespace Cameras.Systems
                     throw new InvalidOperationException($"Camera cannot have both {nameof(CameraOrthographicSize)} and {nameof(CameraFieldOfView)} components");
                 }
 
-                (uint width, uint height) = world.GetComponent<IsDestination>(cameraOutput.destination).Size;
+                Vector2 size = world.GetComponent<IsDestination>(destinationEntity).SizeAsVector2();
                 (float min, float max) = world.GetComponent<IsCamera>(cameraEntity).Depth;
-                projection = Matrix4x4.CreateOrthographicOffCenter(0, orthographicSize.value * width, 0, orthographicSize.value * height, -min, max);
+                projection = Matrix4x4.CreateOrthographicOffCenter(0, orthographicSize.value * size.X, 0, orthographicSize.value * size.Y, min + 0.1f, max);
+                projection.M43 += 0.1f;
                 view = Matrix4x4.CreateTranslation(-position);
             }
             else if (world.TryGetComponent(cameraEntity, out CameraFieldOfView fov))
@@ -81,9 +84,10 @@ namespace Cameras.Systems
                     throw new InvalidOperationException($"Camera cannot have both {nameof(CameraOrthographicSize)} and {nameof(CameraFieldOfView)} components");
                 }
 
-                float aspect = world.GetComponent<IsDestination>(cameraOutput.destination).AspectRatio;
+                float aspect = world.GetComponent<IsDestination>(destinationEntity).AspectRatio;
                 (float min, float max) = world.GetComponent<IsCamera>(cameraEntity).Depth;
-                projection = Matrix4x4.CreatePerspectiveFieldOfView(fov.value, aspect, min, max);
+                projection = Matrix4x4.CreatePerspectiveFieldOfView(fov.value, aspect, min + 0.1f, max);
+                projection.M43 += 0.1f;
                 projection.M11 *= -1; //flip x axis
             }
             else
