@@ -1,13 +1,96 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace Cameras.Components
 {
-    public struct CameraProjection
+    public struct CameraMatrices
     {
         public Matrix4x4 projection;
         public Matrix4x4 view;
 
-        public CameraProjection(Matrix4x4 projection, Matrix4x4 view)
+        public readonly Vector3 Position
+        {
+            get
+            {
+                Matrix4x4.Invert(view, out Matrix4x4 worldTransform);
+                return new Vector3(worldTransform.M41, worldTransform.M42, worldTransform.M43);
+            }
+        }
+
+        public readonly Quaternion Rotation
+        {
+            get
+            {
+                Matrix4x4.Invert(view, out Matrix4x4 worldTransform);
+                Matrix4x4 rotationMatrix = new(worldTransform.M11, worldTransform.M12, worldTransform.M13, 0f,
+                    worldTransform.M21, worldTransform.M22, worldTransform.M23, 0f,
+                    worldTransform.M31, worldTransform.M32, worldTransform.M33, 0f,
+                    0f, 0f, 0f, 1f);
+                return Quaternion.CreateFromRotationMatrix(rotationMatrix);
+            }
+        }
+
+        public readonly Vector3 Right
+        {
+            get
+            {
+                Matrix4x4.Invert(view, out Matrix4x4 worldTransform);
+                return new Vector3(worldTransform.M11, worldTransform.M12, worldTransform.M13);
+            }
+        }
+
+        public readonly Vector3 Up
+        {
+            get
+            {
+                Matrix4x4.Invert(view, out Matrix4x4 worldTransform);
+                return new Vector3(worldTransform.M21, worldTransform.M22, worldTransform.M23);
+            }
+        }
+
+        public readonly Vector3 Forward
+        {
+            get
+            {
+                Matrix4x4.Invert(view, out Matrix4x4 worldTransform);
+                return new Vector3(-worldTransform.M31, -worldTransform.M32, -worldTransform.M33);
+            }
+        }
+
+        public readonly float FieldOfView
+        {
+            get
+            {
+                float yScale = 1f / projection.M22;
+                return MathF.Atan(1f / yScale) * 2f;
+            }
+        }
+
+        public readonly float NearClipPlane
+        {
+            get
+            {
+                return projection.M43 / (projection.M33 - 1f);
+            }
+        }
+
+        public readonly float FarClipPlane
+        {
+            get
+            {
+                return projection.M43 / (projection.M33 + 1f);
+            }
+        }
+
+        public readonly float AspectRatio
+        {
+            get
+            {
+                return projection.M22 / projection.M11;
+            }
+        }
+
+        public CameraMatrices(Matrix4x4 projection, Matrix4x4 view)
         {
             this.projection = projection;
             this.view = view;
@@ -58,7 +141,7 @@ namespace Cameras.Components
             return origin + direction * distance;
         }
 
-        public static implicit operator (Matrix4x4 projection, Matrix4x4 view)(CameraProjection cameraProjection)
+        public static implicit operator (Matrix4x4 projection, Matrix4x4 view)(CameraMatrices cameraProjection)
         {
             return (cameraProjection.projection, cameraProjection.view);
         }

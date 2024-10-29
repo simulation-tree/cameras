@@ -4,17 +4,17 @@ using System.Diagnostics;
 
 public static class CameraExtensions
 {
-    public static CameraProjection GetProjection(this Camera camera)
+    public static CameraMatrices GetMatrices(this Camera camera)
     {
         ThrowIfProjectionIsMissing(camera);
-        CameraProjection component = camera.entity.GetComponentRef<CameraProjection>();
+        CameraMatrices component = camera.entity.GetComponentRef<CameraMatrices>();
         return component;
     }
 
     [Conditional("DEBUG")]
     private static void ThrowIfProjectionIsMissing(Camera camera)
     {
-        if (!camera.entity.ContainsComponent<CameraProjection>())
+        if (!camera.entity.ContainsComponent<CameraMatrices>())
         {
             throw new System.InvalidOperationException("Camera does not have a CameraProjection component.");
         }

@@ -1,46 +1,71 @@
 ﻿using Cameras.Components;
 using Rendering.Components;
-using Rendering.Events;
 using Simulation;
+using Simulation.Functions;
 using System;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using Transforms.Components;
 
 namespace Cameras.Systems
 {
-    public class CameraSystem : SystemBase
+    public readonly struct CameraSystem : ISystem
     {
         private readonly ComponentQuery<IsCamera> cameraQuery;
 
-        public CameraSystem(World world) : base(world)
+        readonly unsafe InitializeFunction ISystem.Initialize => new(&Initialize);
+        readonly unsafe IterateFunction ISystem.Update => new(&Update);
+        readonly unsafe FinalizeFunction ISystem.Finalize => new(&Finalize);
+
+        [UnmanagedCallersOnly]
+        private static void Initialize(SystemContainer container, World world)
+        {
+        }
+
+        [UnmanagedCallersOnly]
+        private static void Update(SystemContainer container, World world, TimeSpan delta)
+        {
+            ref CameraSystem system = ref container.Read<CameraSystem>();
+            system.Update(world);
+        }
+
+        [UnmanagedCallersOnly]
+        private static void Finalize(SystemContainer container, World world)
+        {
+            if (container.World == world)
+            {
+                ref CameraSystem system = ref container.Read<CameraSystem>();
+                system.CleanUp();
+            }
+        }
+
+        public CameraSystem()
         {
             cameraQuery = new();
-            Subscribe<CameraUpdate>(Update);
         }
 
-        public override void Dispose()
+        private void CleanUp()
         {
             cameraQuery.Dispose();
-            base.Dispose();
         }
 
-        private void Update(CameraUpdate update)
+        private void Update(World world)
         {
             cameraQuery.Update(world);
             foreach (var x in cameraQuery)
             {
                 uint cameraEntity = x.entity;
-                ref CameraProjection projection = ref world.TryGetComponentRef<CameraProjection>(cameraEntity, out bool has);
+                ref CameraMatrices matrices = ref world.TryGetComponentRef<CameraMatrices>(cameraEntity, out bool has);
                 if (!has)
                 {
-                    projection = ref world.AddComponentRef<CameraProjection>(cameraEntity);
+                    matrices = ref world.AddComponentRef<CameraMatrices>(cameraEntity);
                 }
 
-                CalculateProjection(cameraEntity, ref projection);
+                CalculateProjection(world, cameraEntity, ref matrices);
             }
         }
 
-        private void CalculateProjection(uint cameraEntity, ref CameraProjection component)
+        private void CalculateProjection(World world, uint cameraEntity, ref CameraMatrices matrices)
         {
             uint destinationEntity = default;
             if (world.TryGetComponent(cameraEntity, out CameraOutput cameraOutput))
@@ -95,7 +120,7 @@ namespace Cameras.Systems
                 throw new InvalidOperationException($"Camera does not have either {nameof(CameraOrthographicSize)} or {nameof(CameraFieldOfView)} component");
             }
 
-            component = new(projection, view);
+            matrices = new(projection, view);
         }
     }
 }
