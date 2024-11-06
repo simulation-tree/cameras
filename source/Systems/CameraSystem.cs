@@ -68,10 +68,10 @@ namespace Cameras.Systems
         private void CalculateProjection(World world, uint cameraEntity, ref CameraMatrices matrices)
         {
             uint destinationEntity = default;
-            if (world.TryGetComponent(cameraEntity, out CameraOutput cameraOutput))
+            if (world.TryGetComponent(cameraEntity, out IsViewport component))
             {
                 //destination may be gone if a window is destroyed
-                destinationEntity = world.GetReference(cameraEntity, cameraOutput.destinationReference);
+                destinationEntity = world.GetReference(cameraEntity, component.destinationReference);
                 if (destinationEntity == default || !world.ContainsEntity(destinationEntity))
                 {
                     return;

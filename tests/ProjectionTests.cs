@@ -1,7 +1,6 @@
 ﻿using Cameras.Components;
 using Cameras.Systems;
 using Rendering;
-using Rendering.Components;
 using Simulation.Tests;
 using System;
 using System.Numerics;

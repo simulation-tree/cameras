@@ -1,5 +1,5 @@
-﻿using Cameras.Components;
-using Rendering;
+﻿using Cameras;
+using Cameras.Components;
 using System.Diagnostics;
 
 public static class CameraExtensions
@@ -7,14 +7,14 @@ public static class CameraExtensions
     public static CameraMatrices GetMatrices(this Camera camera)
     {
         ThrowIfProjectionIsMissing(camera);
-        CameraMatrices component = camera.entity.GetComponentRef<CameraMatrices>();
+        CameraMatrices component = camera.AsEntity().GetComponentRef<CameraMatrices>();
         return component;
     }
 
     [Conditional("DEBUG")]
     private static void ThrowIfProjectionIsMissing(Camera camera)
     {
-        if (!camera.entity.ContainsComponent<CameraMatrices>())
+        if (!camera.AsEntity().ContainsComponent<CameraMatrices>())
         {
             throw new System.InvalidOperationException("Camera does not have a CameraProjection component.");
         }
