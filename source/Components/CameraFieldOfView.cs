@@ -1,7 +1,9 @@
 ﻿using System;
+using Worlds;
 
 namespace Cameras.Components
 {
+    [Component]
     public struct CameraFieldOfView
     {
         /// <summary>

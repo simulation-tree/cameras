@@ -1,5 +1,8 @@
-﻿namespace Cameras.Components
+﻿using Worlds;
+
+namespace Cameras.Components
 {
+    [Component]
     public struct IsCamera
     {
         public float minDepth;

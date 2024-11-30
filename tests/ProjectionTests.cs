@@ -1,12 +1,14 @@
 ﻿using Cameras.Components;
 using Cameras.Systems;
 using Rendering;
+using Rendering.Components;
 using Simulation.Tests;
 using System;
 using System.Numerics;
 using Transforms;
 using Transforms.Components;
 using Transforms.Systems;
+using Worlds;
 
 namespace Cameras.Tests
 {
@@ -15,6 +17,22 @@ namespace Cameras.Tests
         protected override void SetUp()
         {
             base.SetUp();
+            ComponentType.Register<IsCamera>();
+            ComponentType.Register<CameraOrthographicSize>();
+            ComponentType.Register<CameraFieldOfView>();
+            ComponentType.Register<CameraMatrices>();
+            ComponentType.Register<IsDestination>();
+            ComponentType.Register<IsViewport>();
+            ComponentType.Register<IsTransform>();
+            ComponentType.Register<Position>();
+            ComponentType.Register<Rotation>();
+            ComponentType.Register<WorldRotation>();
+            ComponentType.Register<EulerAngles>();
+            ComponentType.Register<Scale>();
+            ComponentType.Register<Anchor>();
+            ComponentType.Register<Pivot>();
+            ComponentType.Register<LocalToWorld>();
+            ArrayType.Register<DestinationExtension>();
             Simulator.AddSystem<TransformSystem>();
             Simulator.AddSystem<CameraSystem>();
         }

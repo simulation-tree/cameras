@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Numerics;
+using Worlds;
 
 namespace Cameras.Components
 {
+    [Component]
     public struct CameraMatrices
     {
         public Matrix4x4 projection;

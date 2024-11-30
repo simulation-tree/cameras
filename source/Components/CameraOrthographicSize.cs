@@ -1,5 +1,8 @@
-﻿namespace Cameras.Components
+﻿using Worlds;
+
+namespace Cameras.Components
 {
+    [Component]
     public struct CameraOrthographicSize
     {
         public float value;
