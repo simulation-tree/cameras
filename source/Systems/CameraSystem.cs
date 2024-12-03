@@ -1,42 +1,31 @@
 ﻿using Cameras.Components;
 using Rendering.Components;
 using Simulation;
-using Simulation.Functions;
 using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using Transforms.Components;
 using Worlds;
 
 namespace Cameras.Systems
 {
-    public readonly struct CameraSystem : ISystem
+    public readonly partial struct CameraSystem : ISystem
     {
         private readonly ComponentQuery<IsCamera> cameraQuery;
 
-        readonly unsafe StartSystem ISystem.Start => new(&Start);
-        readonly unsafe UpdateSystem ISystem.Update => new(&Update);
-        readonly unsafe FinishSystem ISystem.Finish => new(&Finish);
-
-        [UnmanagedCallersOnly]
-        private static void Start(SystemContainer container, World world)
+        void ISystem.Start(in SystemContainer systemContainer, in World world)
         {
         }
 
-        [UnmanagedCallersOnly]
-        private static void Update(SystemContainer container, World world, TimeSpan delta)
+        void ISystem.Update(in SystemContainer systemContainer, in World world, in TimeSpan delta)
         {
-            ref CameraSystem system = ref container.Read<CameraSystem>();
-            system.Update(world);
+            Update(world);
         }
 
-        [UnmanagedCallersOnly]
-        private static void Finish(SystemContainer container, World world)
+        void ISystem.Finish(in SystemContainer systemContainer, in World world)
         {
-            if (container.World == world)
+            if (systemContainer.World == world)
             {
-                ref CameraSystem system = ref container.Read<CameraSystem>();
-                system.CleanUp();
+                CleanUp();
             }
         }
 
