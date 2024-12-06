@@ -40,10 +40,6 @@ namespace Cameras.Systems
         {
         }
 
-        void IDisposable. Dispose()
-        {
-        }
-
         //todo: efficiency: split this into two separate queries, one for perspective cameras and the other
         //for orthographic cameras
         private readonly void CalculateProjection(World world, uint entity, ref IsCamera camera, ref CameraMatrices matrices, ref IsViewport viewport)
