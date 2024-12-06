@@ -7,7 +7,6 @@ namespace Cameras.Components
     {
         public float minDepth;
         public float maxDepth;
-        public uint mask;
 
         public (float min, float max) Depth
         {
@@ -19,11 +18,10 @@ namespace Cameras.Components
             }
         }
 
-        public IsCamera(float minDepth, float maxDepth, uint mask)
+        public IsCamera(float minDepth, float maxDepth)
         {
             this.minDepth = minDepth;
             this.maxDepth = maxDepth;
-            this.mask = mask;
         }
     }
 }

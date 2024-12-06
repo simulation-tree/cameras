@@ -3,12 +3,11 @@ using Rendering;
 using Rendering.Components;
 using System;
 using System.Diagnostics;
-using System.Numerics;
 using Worlds;
 
 namespace Cameras
 {
-    public readonly struct Camera : IEntity
+    public readonly struct Camera : ICamera
     {
         private readonly Viewport viewport;
 
@@ -16,24 +15,22 @@ namespace Cameras
         {
             get
             {
-                IsCamera component = viewport.AsEntity().GetComponentRef<IsCamera>();
+                IsCamera component = viewport.AsEntity().GetComponent<IsCamera>();
                 return (component.minDepth, component.maxDepth);
             }
             set
             {
-                ref IsCamera component = ref viewport.AsEntity().GetComponentRef<IsCamera>();
-                component = new(value.min, value.max, component.mask);
+                ref IsCamera component = ref viewport.AsEntity().GetComponent<IsCamera>();
+                component = new(value.min, value.max);
             }
         }
-
-        public readonly ref uint Mask => ref viewport.AsEntity().GetComponentRef<IsCamera>().mask;
 
         public readonly ref float FieldOfView
         {
             get
             {
                 ThrowIfOrthographic();
-                return ref viewport.AsEntity().GetComponentRef<CameraFieldOfView>().value;
+                return ref viewport.AsEntity().GetComponent<CameraFieldOfView>().value;
             }
         }
 
@@ -42,14 +39,12 @@ namespace Cameras
             get
             {
                 ThrowIfPerspective();
-                return ref viewport.AsEntity().GetComponentRef<CameraOrthographicSize>().value;
+                return ref viewport.AsEntity().GetComponent<CameraOrthographicSize>().value;
             }
         }
 
         public readonly bool IsOrthographic => viewport.AsEntity().ContainsComponent<CameraOrthographicSize>();
         public readonly bool IsPerspective => viewport.AsEntity().ContainsComponent<CameraFieldOfView>();
-        public readonly ref sbyte Order => ref viewport.Order;
-        public readonly ref Vector4 OutputRegion => ref viewport.Region;
 
         public readonly Destination Destination
         {
@@ -86,8 +81,7 @@ namespace Cameras
                 viewport.AddComponent(new CameraFieldOfView(size));
             }
 
-            rint destinationReference = destination == default ? default : viewport.AddReference(destination);
-            viewport.AddComponent(new IsCamera(minDepth, maxDepth, mask));
+            viewport.AddComponent(new IsCamera(minDepth, maxDepth));
         }
 
         public Camera(World world, Destination destination, CameraFieldOfView fieldOfView, float minDepth = 0.1f, float maxDepth = 1000f, uint mask = uint.MaxValue) :
