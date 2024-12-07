@@ -33,8 +33,8 @@ namespace Cameras.Tests
             ComponentType.Register<Pivot>();
             ComponentType.Register<LocalToWorld>();
             ArrayType.Register<DestinationExtension>();
-            Simulator.AddSystem(new TransformSystem());
-            Simulator.AddSystem(new CameraSystem());
+            Simulator.AddSystem<TransformSystem>();
+            Simulator.AddSystem<CameraSystem>();
         }
 
         [Test]
