@@ -10,13 +10,23 @@ namespace Cameras.Systems
 {
     public readonly partial struct CameraSystem : ISystem
     {
+        private readonly Operation operation;
+
+        private CameraSystem(Operation operation)
+        {
+            this.operation = operation;
+        }
+
         void ISystem.Start(in SystemContainer systemContainer, in World world)
         {
+            if (systemContainer.World == world)
+            {
+                systemContainer.Write(new CameraSystem(new Operation()));
+            }
         }
 
         void ISystem.Update(in SystemContainer systemContainer, in World world, in TimeSpan delta)
         {
-            using Operation operation = new();
             ComponentQuery<IsCamera> camerasWithoutMatricesQuery = new(world, ComponentType.GetBitSet<CameraMatrices>());
             foreach (var r in camerasWithoutMatricesQuery)
             {
@@ -27,6 +37,7 @@ namespace Cameras.Systems
             {
                 operation.AddComponent<CameraMatrices>();
                 world.Perform(operation);
+                operation.Clear();
             }
 
             ComponentQuery<IsCamera, CameraMatrices, IsViewport> cameraQuery = new(world);
@@ -38,6 +49,10 @@ namespace Cameras.Systems
 
         void ISystem.Finish(in SystemContainer systemContainer, in World world)
         {
+            if (systemContainer.World == world)
+            {
+                operation.Dispose();
+            }
         }
 
         //todo: efficiency: split this into two separate queries, one for perspective cameras and the other
