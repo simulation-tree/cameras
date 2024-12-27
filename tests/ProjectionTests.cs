@@ -14,37 +14,57 @@ namespace Cameras.Tests
 {
     public class ProjectionTests : SimulationTests
     {
+        static ProjectionTests()
+        {
+            TypeLayout.Register<IsCamera>("IsCamera");
+            TypeLayout.Register<CameraOrthographicSize>("CameraOrthographicSize");
+            TypeLayout.Register<CameraFieldOfView>("CameraFieldOfView");
+            TypeLayout.Register<CameraMatrices>("CameraMatrices");
+            TypeLayout.Register<IsDestination>("IsDestination");
+            TypeLayout.Register<IsViewport>("IsViewport");
+            TypeLayout.Register<IsTransform>("IsTransform");
+            TypeLayout.Register<Position>("Position");
+            TypeLayout.Register<Rotation>("Rotation");
+            TypeLayout.Register<WorldRotation>("WorldRotation");
+            TypeLayout.Register<EulerAngles>("EulerAngles");
+            TypeLayout.Register<Scale>("Scale");
+            TypeLayout.Register<Anchor>("Anchor");
+            TypeLayout.Register<Pivot>("Pivot");
+            TypeLayout.Register<LocalToWorld>("LocalToWorld");
+            TypeLayout.Register<DestinationExtension>("DestinationExtension");
+        }
+
         protected override void SetUp()
         {
             base.SetUp();
-            ComponentType.Register<IsCamera>();
-            ComponentType.Register<CameraOrthographicSize>();
-            ComponentType.Register<CameraFieldOfView>();
-            ComponentType.Register<CameraMatrices>();
-            ComponentType.Register<IsDestination>();
-            ComponentType.Register<IsViewport>();
-            ComponentType.Register<IsTransform>();
-            ComponentType.Register<Position>();
-            ComponentType.Register<Rotation>();
-            ComponentType.Register<WorldRotation>();
-            ComponentType.Register<EulerAngles>();
-            ComponentType.Register<Scale>();
-            ComponentType.Register<Anchor>();
-            ComponentType.Register<Pivot>();
-            ComponentType.Register<LocalToWorld>();
-            ArrayType.Register<DestinationExtension>();
-            Simulator.AddSystem<TransformSystem>();
-            Simulator.AddSystem<CameraSystem>();
+            world.Schema.RegisterComponent<IsCamera>();
+            world.Schema.RegisterComponent<CameraOrthographicSize>();
+            world.Schema.RegisterComponent<CameraFieldOfView>();
+            world.Schema.RegisterComponent<CameraMatrices>();
+            world.Schema.RegisterComponent<IsDestination>();
+            world.Schema.RegisterComponent<IsViewport>();
+            world.Schema.RegisterComponent<IsTransform>();
+            world.Schema.RegisterComponent<Position>();
+            world.Schema.RegisterComponent<Rotation>();
+            world.Schema.RegisterComponent<WorldRotation>();
+            world.Schema.RegisterComponent<EulerAngles>();
+            world.Schema.RegisterComponent<Scale>();
+            world.Schema.RegisterComponent<Anchor>();
+            world.Schema.RegisterComponent<Pivot>();
+            world.Schema.RegisterComponent<LocalToWorld>();
+            world.Schema.RegisterArrayElement<DestinationExtension>();
+            simulator.AddSystem<TransformSystem>();
+            simulator.AddSystem<CameraSystem>();
         }
 
         [Test]
         public void CheckValuesOfViewMatrix()
         {
-            Destination destination = new(World, new(1980, 1080), "dummy");
-            Camera camera = new(World, destination, CameraFieldOfView.FromDegrees(90), 0f, 1000f);
+            Destination destination = new(world, new(1980, 1080), "dummy");
+            Camera camera = new(world, destination, CameraFieldOfView.FromDegrees(90), 0f, 1000f);
             Transform cameraTransform = camera.AsEntity().Become<Transform>();
 
-            Simulator.Update(TimeSpan.FromSeconds(0.01f));
+            simulator.Update(TimeSpan.FromSeconds(0.01f));
 
             CameraMatrices matrices = camera.GetMatrices();
             Assert.That(matrices.Position.X, Is.EqualTo(0).Within(0.1f));
@@ -54,7 +74,7 @@ namespace Cameras.Tests
             cameraTransform.WorldPosition = new(2, 1, 0);
             cameraTransform.WorldRotation = Rotation.FromDirection(Vector3.UnitZ).value;
 
-            Simulator.Update(TimeSpan.FromSeconds(0.01f));
+            simulator.Update(TimeSpan.FromSeconds(0.01f));
 
             matrices = camera.GetMatrices();
             Assert.That(matrices.Position.X, Is.EqualTo(2).Within(0.1f));
@@ -66,7 +86,7 @@ namespace Cameras.Tests
 
             cameraTransform.WorldRotation = Rotation.FromDirection(Vector3.UnitX).value;
 
-            Simulator.Update(TimeSpan.FromSeconds(0.01f));
+            simulator.Update(TimeSpan.FromSeconds(0.01f));
 
             matrices = camera.GetMatrices();
             Assert.That(matrices.Position.X, Is.EqualTo(2).Within(0.1f));
@@ -80,11 +100,11 @@ namespace Cameras.Tests
         [Test]
         public void CheckPerspectiveRay()
         {
-            Destination destination = new(World, new(1980, 1080), "dummy");
-            Camera camera = new(World, destination, CameraFieldOfView.FromDegrees(90), 0f, 1000f);
+            Destination destination = new(world, new(1980, 1080), "dummy");
+            Camera camera = new(world, destination, CameraFieldOfView.FromDegrees(90), 0f, 1000f);
             Transform cameraTransform = camera.AsEntity().Become<Transform>();
 
-            Simulator.Update(TimeSpan.FromSeconds(0.01f));
+            simulator.Update(TimeSpan.FromSeconds(0.01f));
 
             CameraMatrices projection = camera.GetMatrices();
             (Vector3 origin, Vector3 direction) ray = projection.GetRayFromScreenPoint(new(0.5f, 0.5f));
@@ -99,7 +119,7 @@ namespace Cameras.Tests
             cameraTransform.WorldPosition = new(2, 1, 0);
             cameraTransform.WorldRotation = Rotation.FromDirection(Vector3.UnitX).value;
 
-            Simulator.Update(TimeSpan.FromSeconds(0.01f));
+            simulator.Update(TimeSpan.FromSeconds(0.01f));
 
             projection = camera.GetMatrices();
             ray = projection.GetRayFromScreenPoint(new(0.5f, 0.5f));

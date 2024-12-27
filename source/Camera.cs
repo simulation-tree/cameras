@@ -54,7 +54,11 @@ namespace Cameras
 
         readonly uint IEntity.Value => viewport.GetEntityValue();
         readonly World IEntity.World => viewport.GetWorld();
-        readonly Definition IEntity.Definition => new Definition().AddComponentTypes<IsViewport, IsCamera>();
+
+        readonly Definition IEntity.GetDefinition(Schema schema)
+        {
+            return new Definition().AddComponentTypes<IsViewport, IsCamera>(schema);
+        }
 
 #if NET
         [Obsolete("Default constructor not available", true)]

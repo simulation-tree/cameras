@@ -30,7 +30,7 @@ namespace Cameras.Systems
 
         void ISystem.Update(in SystemContainer systemContainer, in World world, in TimeSpan delta)
         {
-            ComponentQuery<IsCamera> camerasWithoutMatricesQuery = new(world, ComponentType.GetBitSet<CameraMatrices>());
+            ComponentQuery<IsCamera> camerasWithoutMatricesQuery = new(world, world.Schema.GetComponents<CameraMatrices>());
             foreach (var r in camerasWithoutMatricesQuery)
             {
                 operation.SelectEntity(r.entity);
@@ -38,7 +38,7 @@ namespace Cameras.Systems
 
             if (operation.Count > 0)
             {
-                operation.AddComponent<CameraMatrices>();
+                operation.AddComponent<CameraMatrices>(world.Schema);
                 world.Perform(operation);
                 operation.Clear();
             }
