@@ -16,22 +16,22 @@ namespace Cameras.Tests
     {
         static ProjectionTests()
         {
-            TypeLayout.Register<IsCamera>("IsCamera");
-            TypeLayout.Register<CameraOrthographicSize>("CameraOrthographicSize");
-            TypeLayout.Register<CameraFieldOfView>("CameraFieldOfView");
-            TypeLayout.Register<CameraMatrices>("CameraMatrices");
-            TypeLayout.Register<IsDestination>("IsDestination");
-            TypeLayout.Register<IsViewport>("IsViewport");
-            TypeLayout.Register<IsTransform>("IsTransform");
-            TypeLayout.Register<Position>("Position");
-            TypeLayout.Register<Rotation>("Rotation");
-            TypeLayout.Register<WorldRotation>("WorldRotation");
-            TypeLayout.Register<EulerAngles>("EulerAngles");
-            TypeLayout.Register<Scale>("Scale");
-            TypeLayout.Register<Anchor>("Anchor");
-            TypeLayout.Register<Pivot>("Pivot");
-            TypeLayout.Register<LocalToWorld>("LocalToWorld");
-            TypeLayout.Register<DestinationExtension>("DestinationExtension");
+            TypeLayout.Register<IsCamera>();
+            TypeLayout.Register<CameraOrthographicSize>();
+            TypeLayout.Register<CameraFieldOfView>();
+            TypeLayout.Register<CameraMatrices>();
+            TypeLayout.Register<IsDestination>();
+            TypeLayout.Register<IsViewport>();
+            TypeLayout.Register<IsTransform>();
+            TypeLayout.Register<Position>();
+            TypeLayout.Register<Rotation>();
+            TypeLayout.Register<WorldRotation>();
+            TypeLayout.Register<EulerAngles>();
+            TypeLayout.Register<Scale>();
+            TypeLayout.Register<Anchor>();
+            TypeLayout.Register<Pivot>();
+            TypeLayout.Register<LocalToWorld>();
+            TypeLayout.Register<DestinationExtension>();
         }
 
         protected override void SetUp()
