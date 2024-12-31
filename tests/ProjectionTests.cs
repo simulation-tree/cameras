@@ -71,8 +71,8 @@ namespace Cameras.Tests
             Assert.That(matrices.Position.Y, Is.EqualTo(0).Within(0.1f));
             Assert.That(matrices.Position.Z, Is.EqualTo(0).Within(0.1f));
 
-            cameraTransform.WorldPosition = new(2, 1, 0);
-            cameraTransform.WorldRotation = Rotation.FromDirection(Vector3.UnitZ).value;
+            cameraTransform.LocalPosition = new(2, 1, 0);
+            cameraTransform.LocalRotation = Rotation.FromDirection(Vector3.UnitZ).value;
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
 
@@ -84,7 +84,7 @@ namespace Cameras.Tests
             Assert.That(matrices.Forward.Y, Is.EqualTo(0).Within(0.1f));
             Assert.That(matrices.Forward.Z, Is.EqualTo(1).Within(0.1f));
 
-            cameraTransform.WorldRotation = Rotation.FromDirection(Vector3.UnitX).value;
+            cameraTransform.LocalRotation = Rotation.FromDirection(Vector3.UnitX).value;
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
 
@@ -116,8 +116,8 @@ namespace Cameras.Tests
             Assert.That(ray.direction.Y, Is.EqualTo(0).Within(0.1));
             Assert.That(ray.direction.Z, Is.EqualTo(1).Within(0.1));
 
-            cameraTransform.WorldPosition = new(2, 1, 0);
-            cameraTransform.WorldRotation = Rotation.FromDirection(Vector3.UnitX).value;
+            cameraTransform.LocalPosition = new(2, 1, 0);
+            cameraTransform.LocalRotation = Rotation.FromDirection(Vector3.UnitX).value;
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
 
