@@ -37,13 +37,13 @@ namespace Cameras.Tests
         protected override void SetUp()
         {
             base.SetUp();
+            world.Schema.RegisterTag<IsTransform>();
             world.Schema.RegisterComponent<IsCamera>();
             world.Schema.RegisterComponent<CameraOrthographicSize>();
             world.Schema.RegisterComponent<CameraFieldOfView>();
             world.Schema.RegisterComponent<CameraMatrices>();
             world.Schema.RegisterComponent<IsDestination>();
             world.Schema.RegisterComponent<IsViewport>();
-            world.Schema.RegisterComponent<IsTransform>();
             world.Schema.RegisterComponent<Position>();
             world.Schema.RegisterComponent<Rotation>();
             world.Schema.RegisterComponent<WorldRotation>();
