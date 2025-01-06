@@ -55,9 +55,10 @@ namespace Cameras
         readonly uint IEntity.Value => viewport.GetEntityValue();
         readonly World IEntity.World => viewport.GetWorld();
 
-        readonly Definition IEntity.GetDefinition(Schema schema)
+        readonly void IEntity.Describe(ref Archetype archetype)
         {
-            return new Definition().AddComponentTypes<IsViewport, IsCamera>(schema);
+            archetype.AddComponentType<IsViewport>();
+            archetype.AddComponentType<IsCamera>();
         }
 
 #if NET
