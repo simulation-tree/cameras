@@ -25,6 +25,8 @@ namespace Cameras
             }
         }
 
+        public readonly ref uint Mask => ref viewport.Mask;
+
         public readonly ref float FieldOfView
         {
             get
