@@ -25,7 +25,7 @@ namespace Cameras
             }
         }
 
-        public readonly ref uint Mask => ref viewport.Mask;
+        public readonly ref LayerMask RenderMask => ref viewport.RenderMask;
 
         public readonly ref float FieldOfView
         {
@@ -76,9 +76,9 @@ namespace Cameras
             viewport = new(world, existingEntity);
         }
 
-        public Camera(World world, Destination destination, bool isOrthographic, float size, float minDepth = 0.1f, float maxDepth = 1000f, uint mask = uint.MaxValue)
+        public Camera(World world, Destination destination, bool isOrthographic, float size, LayerMask renderMask, float minDepth = 0.1f, float maxDepth = 1000f)
         {
-            viewport = new(world, destination, mask);
+            viewport = new(world, destination, renderMask);
             if (isOrthographic)
             {
                 viewport.AddComponent(new CameraOrthographicSize(size));
@@ -91,15 +91,24 @@ namespace Cameras
             viewport.AddComponent(new IsCamera(minDepth, maxDepth));
         }
 
-        public Camera(World world, Destination destination, CameraFieldOfView fieldOfView, float minDepth = 0.1f, float maxDepth = 1000f, uint mask = uint.MaxValue) :
-            this(world, destination, false, fieldOfView.value, minDepth, maxDepth, mask)
+        public Camera(World world, Destination destination, CameraFieldOfView fieldOfView, LayerMask renderMask, float minDepth = 0.1f, float maxDepth = 1000f) :
+            this(world, destination, false, fieldOfView.value, renderMask, minDepth, maxDepth)
         {
         }
 
-        public Camera(World world, Destination destination, CameraOrthographicSize orthographicSize, float minDepth = 0.1f, float maxDepth = 1000f, uint mask = uint.MaxValue) :
-            this(world, destination, true, orthographicSize.value, minDepth, maxDepth, mask)
+        public Camera(World world, Destination destination, CameraOrthographicSize orthographicSize, LayerMask renderMask, float minDepth = 0.1f, float maxDepth = 1000f) :
+            this(world, destination, true, orthographicSize.value, renderMask, minDepth, maxDepth)
         {
+        }
 
+        public Camera(World world, Destination destination, CameraFieldOfView fieldOfView, float minDepth = 0.1f, float maxDepth = 1000f) :
+            this(world, destination, false, fieldOfView.value, LayerMask.All, minDepth, maxDepth)
+        {
+        }
+
+        public Camera(World world, Destination destination, CameraOrthographicSize orthographicSize, float minDepth = 0.1f, float maxDepth = 1000f) :
+            this(world, destination, true, orthographicSize.value, LayerMask.All, minDepth, maxDepth)
+        {
         }
 
         public readonly void Dispose()
@@ -130,14 +139,24 @@ namespace Cameras
             }
         }
 
-        public static Camera CreatePerspective(World world, Destination destination, float fieldOfView, float minDepth = 0.1f, float maxDepth = 1000f, uint mask = uint.MaxValue)
+        public static Camera CreatePerspective(World world, Destination destination, float fieldOfView, LayerMask renderMask, float minDepth = 0.1f, float maxDepth = 1000f)
         {
-            return new(world, destination, new CameraFieldOfView(fieldOfView), minDepth, maxDepth, mask);
+            return new(world, destination, new CameraFieldOfView(fieldOfView), renderMask, minDepth, maxDepth);
         }
 
-        public static Camera CreateOrthographic(World world, Destination destination, float orthographicSize, float minDepth = 0.1f, float maxDepth = 1000f, uint mask = uint.MaxValue)
+        public static Camera CreateOrthographic(World world, Destination destination, float orthographicSize, LayerMask renderMask, float minDepth = 0.1f, float maxDepth = 1000f)
         {
-            return new(world, destination, new CameraOrthographicSize(orthographicSize), minDepth, maxDepth, mask);
+            return new(world, destination, new CameraOrthographicSize(orthographicSize), renderMask, minDepth, maxDepth);
+        }
+
+        public static Camera CreatePerspective(World world, Destination destination, float fieldOfView, float minDepth = 0.1f, float maxDepth = 1000f)
+        {
+            return new(world, destination, new CameraFieldOfView(fieldOfView), LayerMask.All, minDepth, maxDepth);
+        }
+
+        public static Camera CreateOrthographic(World world, Destination destination, float orthographicSize, float minDepth = 0.1f, float maxDepth = 1000f)
+        {
+            return new(world, destination, new CameraOrthographicSize(orthographicSize), LayerMask.All, minDepth, maxDepth);
         }
 
         public static implicit operator Entity(Camera camera)
