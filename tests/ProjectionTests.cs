@@ -8,6 +8,7 @@ using System.Numerics;
 using Transforms;
 using Transforms.Components;
 using Transforms.Systems;
+using Types;
 using Worlds;
 
 namespace Cameras.Tests
