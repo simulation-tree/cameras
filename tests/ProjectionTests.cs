@@ -18,8 +18,7 @@ namespace Cameras.Tests
         static ProjectionTests()
         {
             TypeLayout.Register<IsCamera>();
-            TypeLayout.Register<CameraOrthographicSize>();
-            TypeLayout.Register<CameraFieldOfView>();
+            TypeLayout.Register<CameraSettings>();
             TypeLayout.Register<CameraMatrices>();
             TypeLayout.Register<IsDestination>();
             TypeLayout.Register<IsViewport>();
@@ -40,8 +39,7 @@ namespace Cameras.Tests
             base.SetUp();
             world.Schema.RegisterTag<IsTransform>();
             world.Schema.RegisterComponent<IsCamera>();
-            world.Schema.RegisterComponent<CameraOrthographicSize>();
-            world.Schema.RegisterComponent<CameraFieldOfView>();
+            world.Schema.RegisterComponent<CameraSettings>();
             world.Schema.RegisterComponent<CameraMatrices>();
             world.Schema.RegisterComponent<IsDestination>();
             world.Schema.RegisterComponent<IsViewport>();
@@ -62,7 +60,7 @@ namespace Cameras.Tests
         public void CheckValuesOfViewMatrix()
         {
             Destination destination = new(world, new(1980, 1080), "dummy");
-            Camera camera = new(world, destination, CameraFieldOfView.FromDegrees(90), 0f, 1000f);
+            Camera camera = new(world, destination, CameraSettings.PerspectiveFromDegrees(90), 0f, 1000f);
             Transform cameraTransform = camera.AsEntity().Become<Transform>();
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
@@ -102,7 +100,7 @@ namespace Cameras.Tests
         public void CheckPerspectiveRay()
         {
             Destination destination = new(world, new(1980, 1080), "dummy");
-            Camera camera = new(world, destination, CameraFieldOfView.FromDegrees(90), 0f, 1000f);
+            Camera camera = new(world, destination, CameraSettings.PerspectiveFromDegrees(90), 0f, 1000f);
             Transform cameraTransform = camera.AsEntity().Become<Transform>();
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
