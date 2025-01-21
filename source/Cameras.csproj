@@ -22,8 +22,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\rendering\source\Rendering.csproj" />
-		<ProjectReference Include="..\..\simulation\source\Simulation.csproj" />
+		<ProjectReference Include="..\..\rendering\core\Rendering.Core.csproj" />
+		<ProjectReference Include="..\..\simulation\core\Simulation.Core.csproj" />
 		<ProjectReference Include="..\..\transforms\source\Transforms.csproj" />
 		<ProjectReference Include="..\..\simulation\generator\Simulation.Generator.csproj">
 			<OutputItemType>Analyzer</OutputItemType>
