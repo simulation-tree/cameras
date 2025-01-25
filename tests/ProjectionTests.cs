@@ -1,61 +1,15 @@
 ﻿using Cameras.Components;
-using Cameras.Systems;
 using Rendering;
-using Rendering.Components;
-using Simulation.Tests;
 using System;
 using System.Numerics;
 using Transforms;
 using Transforms.Components;
-using Transforms.Systems;
-using Types;
 using Worlds;
 
 namespace Cameras.Tests
 {
-    public class ProjectionTests : SimulationTests
+    public class ProjectionTests : CameraTests
     {
-        static ProjectionTests()
-        {
-            TypeLayout.Register<IsCamera>();
-            TypeLayout.Register<CameraSettings>();
-            TypeLayout.Register<CameraMatrices>();
-            TypeLayout.Register<IsDestination>();
-            TypeLayout.Register<IsViewport>();
-            TypeLayout.Register<IsTransform>();
-            TypeLayout.Register<Position>();
-            TypeLayout.Register<Rotation>();
-            TypeLayout.Register<WorldRotation>();
-            TypeLayout.Register<EulerAngles>();
-            TypeLayout.Register<Scale>();
-            TypeLayout.Register<Anchor>();
-            TypeLayout.Register<Pivot>();
-            TypeLayout.Register<LocalToWorld>();
-            TypeLayout.Register<DestinationExtension>();
-        }
-
-        protected override void SetUp()
-        {
-            base.SetUp();
-            world.Schema.RegisterTag<IsTransform>();
-            world.Schema.RegisterComponent<IsCamera>();
-            world.Schema.RegisterComponent<CameraSettings>();
-            world.Schema.RegisterComponent<CameraMatrices>();
-            world.Schema.RegisterComponent<IsDestination>();
-            world.Schema.RegisterComponent<IsViewport>();
-            world.Schema.RegisterComponent<Position>();
-            world.Schema.RegisterComponent<Rotation>();
-            world.Schema.RegisterComponent<WorldRotation>();
-            world.Schema.RegisterComponent<EulerAngles>();
-            world.Schema.RegisterComponent<Scale>();
-            world.Schema.RegisterComponent<Anchor>();
-            world.Schema.RegisterComponent<Pivot>();
-            world.Schema.RegisterComponent<LocalToWorld>();
-            world.Schema.RegisterArrayElement<DestinationExtension>();
-            simulator.AddSystem<TransformSystem>();
-            simulator.AddSystem<CameraSystem>();
-        }
-
         [Test]
         public void CheckValuesOfViewMatrix()
         {
