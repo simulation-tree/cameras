@@ -11,7 +11,7 @@ namespace Cameras.Tests
         static CameraTests()
         {
             TypeRegistry.Load<Transforms.TypeBank>();
-            TypeRegistry.Load<Rendering.TypeBank>();
+            TypeRegistry.Load<Rendering.Core.TypeBank>();
             TypeRegistry.Load<Cameras.TypeBank>();
         }
 
@@ -19,7 +19,7 @@ namespace Cameras.Tests
         {
             Schema schema = base.CreateSchema();
             schema.Load<Transforms.SchemaBank>();
-            schema.Load<Rendering.SchemaBank>();
+            schema.Load<Rendering.Core.SchemaBank>();
             schema.Load<Cameras.SchemaBank>();
             return schema;
         }
