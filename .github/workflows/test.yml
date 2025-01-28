@@ -138,11 +138,17 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Restore
-        run: dotnet restore "${{ github.event.repository.name }}"
+      - name: Restore Source
+        run: dotnet restore "${{ github.event.repository.name }}/source"
 
-      - name: Build
-        run: dotnet build "${{ github.event.repository.name }}" -c Debug
+      - name: Restore Tests
+        run: dotnet restore "${{ github.event.repository.name }}/tests"
+
+      - name: Build Source
+        run: dotnet build "${{ github.event.repository.name }}/source" -c Debug
+
+      - name: Build Tests
+        run: dotnet build "${{ github.event.repository.name }}/tests" -c Debug
 
       - name: Test
         run: dotnet test "${{ github.event.repository.name }}/tests" -c Debug --logger "trx" --no-build
