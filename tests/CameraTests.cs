@@ -1,5 +1,7 @@
 ﻿using Cameras.Systems;
+using Rendering;
 using Simulation.Tests;
+using Transforms;
 using Transforms.Systems;
 using Types;
 using Worlds;
@@ -10,17 +12,17 @@ namespace Cameras.Tests
     {
         static CameraTests()
         {
-            TypeRegistry.Load<Transforms.TypeBank>();
-            TypeRegistry.Load<Rendering.Core.TypeBank>();
-            TypeRegistry.Load<Cameras.TypeBank>();
+            TypeRegistry.Load<TransformsTypeBank>();
+            TypeRegistry.Load<RenderingTypeBank>();
+            TypeRegistry.Load<CamerasTypeBank>();
         }
 
         protected override Schema CreateSchema()
         {
             Schema schema = base.CreateSchema();
-            schema.Load<Transforms.SchemaBank>();
-            schema.Load<Rendering.Core.SchemaBank>();
-            schema.Load<Cameras.SchemaBank>();
+            schema.Load<TransformsSchemaBank>();
+            schema.Load<RenderingSchemaBank>();
+            schema.Load<CamerasSchemaBank>();
             return schema;
         }
 
