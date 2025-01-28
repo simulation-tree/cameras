@@ -138,8 +138,14 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Test project
-        run: dotnet test "${{ github.event.repository.name }}/tests" -c Debug --logger "trx"
+      - name: Restore
+        run: dotnet restore "${{ github.event.repository.name }}"
+
+      - name: Build
+        run: dotnet build "${{ github.event.repository.name }}" -c Debug
+
+      - name: Test
+        run: dotnet test "${{ github.event.repository.name }}/tests" -c Debug --logger "trx" --no-build
 
       - name: Publish Report
         uses: dorny/test-reporter@v1
