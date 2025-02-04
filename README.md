@@ -1,7 +1,9 @@
 # Cameras
-Implements projection calculations for cameras.
+
+Cameras for rendering.
 
 ### Projection data
+
 Extending from the `rendering` project, an extension method is available to fetch
 the projection and view matrices from a `Camera`:
 ```cs
@@ -12,6 +14,7 @@ CameraProjection cameraProjection = mainCamera.GetProjection();
 ```
 
 ### Ray from screen point
+
 When a screen point is available, a ray can be calculated from the camera's perspective:
 ```cs
 Vector2 mousePosition = ...

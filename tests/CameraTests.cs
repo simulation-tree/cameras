@@ -1,14 +1,12 @@
-﻿using Cameras.Systems;
-using Rendering;
-using Simulation.Tests;
+﻿using Rendering;
 using Transforms;
-using Transforms.Systems;
 using Types;
 using Worlds;
+using Worlds.Tests;
 
 namespace Cameras.Tests
 {
-    public abstract class CameraTests : SimulationTests
+    public abstract class CameraTests : WorldTests
     {
         static CameraTests()
         {
@@ -24,13 +22,6 @@ namespace Cameras.Tests
             schema.Load<RenderingSchemaBank>();
             schema.Load<CamerasSchemaBank>();
             return schema;
-        }
-
-        protected override void SetUp()
-        {
-            base.SetUp();
-            simulator.AddSystem<TransformSystem>();
-            simulator.AddSystem<CameraSystem>();
         }
     }
 }
