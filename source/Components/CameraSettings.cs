@@ -6,29 +6,46 @@ namespace Cameras.Components
     [Component]
     public struct CameraSettings
     {
+        public const float DefaultMinDepth = 0.01f;
+        public const float DefaultMaxDepth = 1000f;
+
         public float size;
         public bool orthographic;
+        public float minDepth;
+        public float maxDepth;
 
-        public CameraSettings(float size, bool orthographic)
+        public (float min, float max) Depth
+        {
+            readonly get => (minDepth, maxDepth);
+            set
+            {
+                minDepth = value.min;
+                maxDepth = value.max;
+            }
+        }
+
+        public CameraSettings(float size, bool orthographic, float minDepth, float maxDepth)
         {
             this.size = size;
             this.orthographic = orthographic;
+            this.minDepth = minDepth;
+            this.maxDepth = maxDepth;
         }
 
-        public static CameraSettings Orthographic(float size)
+        public static CameraSettings CreateOrthographic(float size, float minDepth = DefaultMinDepth, float maxDepth = DefaultMaxDepth)
         {
-            return new CameraSettings(size, true);
+            return new CameraSettings(size, true, minDepth, maxDepth);
         }
 
-        public static CameraSettings PerspectiveFromDegrees(float fieldOfView)
+        public static CameraSettings CreatePerspectiveDegrees(float fieldOfView, float minDepth = DefaultMinDepth, float maxDepth = DefaultMaxDepth)
         {
             float radians = fieldOfView * MathF.PI / 180f;
-            return new CameraSettings(radians, false);
+            return new CameraSettings(radians, false, minDepth, maxDepth);
         }
 
-        public static CameraSettings PerspectiveFromRadians(float fieldOfView)
+        public static CameraSettings CreatePerspectiveRadians(float fieldOfView, float minDepth = DefaultMinDepth, float maxDepth = DefaultMaxDepth)
         {
-            return new CameraSettings(fieldOfView, false);
+            return new CameraSettings(fieldOfView, false, minDepth, maxDepth);
         }
     }
 }

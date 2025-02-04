@@ -16,7 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\rendering\core\Rendering.Core.csproj" />
+		<ProjectReference Include="..\..\rendering\source\Rendering.csproj" />
 		<ProjectReference Include="..\..\simulation\core\Simulation.Core.csproj" />
 		<ProjectReference Include="..\..\transforms\source\Transforms.csproj" />
 		<ProjectReference Include="..\..\simulation\generator\Simulation.Generator.csproj">

@@ -14,12 +14,12 @@ namespace Cameras.Tests
         public void CheckValuesOfViewMatrix()
         {
             Destination destination = new(world, new(1980, 1080), "dummy");
-            Camera camera = new(world, destination, CameraSettings.PerspectiveFromDegrees(90), 0f, 1000f);
+            Camera camera = new(world, destination, CameraSettings.CreatePerspectiveDegrees(90), 0f, 1000f);
             Transform cameraTransform = camera.AsEntity().Become<Transform>();
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
 
-            CameraMatrices matrices = camera.GetMatrices();
+            CameraMatrices matrices = camera.Matrices;
             Assert.That(matrices.Position.X, Is.EqualTo(0).Within(0.1f));
             Assert.That(matrices.Position.Y, Is.EqualTo(0).Within(0.1f));
             Assert.That(matrices.Position.Z, Is.EqualTo(0).Within(0.1f));
@@ -29,7 +29,7 @@ namespace Cameras.Tests
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
 
-            matrices = camera.GetMatrices();
+            matrices = camera.Matrices;
             Assert.That(matrices.Position.X, Is.EqualTo(2).Within(0.1f));
             Assert.That(matrices.Position.Y, Is.EqualTo(1).Within(0.1f));
             Assert.That(matrices.Position.Z, Is.EqualTo(0).Within(0.1f));
@@ -41,7 +41,7 @@ namespace Cameras.Tests
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
 
-            matrices = camera.GetMatrices();
+            matrices = camera.Matrices;
             Assert.That(matrices.Position.X, Is.EqualTo(2).Within(0.1f));
             Assert.That(matrices.Position.Y, Is.EqualTo(1).Within(0.1f));
             Assert.That(matrices.Position.Z, Is.EqualTo(0).Within(0.1f));
@@ -54,12 +54,12 @@ namespace Cameras.Tests
         public void CheckPerspectiveRay()
         {
             Destination destination = new(world, new(1980, 1080), "dummy");
-            Camera camera = new(world, destination, CameraSettings.PerspectiveFromDegrees(90), 0f, 1000f);
+            Camera camera = new(world, destination, CameraSettings.CreatePerspectiveDegrees(90), 0f, 1000f);
             Transform cameraTransform = camera.AsEntity().Become<Transform>();
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
 
-            CameraMatrices projection = camera.GetMatrices();
+            CameraMatrices projection = camera.Matrices;
             (Vector3 origin, Vector3 direction) ray = projection.GetRayFromScreenPoint(new(0.5f, 0.5f));
 
             Assert.That(ray.origin.X, Is.EqualTo(0).Within(0.1));
@@ -74,7 +74,7 @@ namespace Cameras.Tests
 
             simulator.Update(TimeSpan.FromSeconds(0.01f));
 
-            projection = camera.GetMatrices();
+            projection = camera.Matrices;
             ray = projection.GetRayFromScreenPoint(new(0.5f, 0.5f));
 
             Assert.That(ray.origin.X, Is.EqualTo(2).Within(0.1));

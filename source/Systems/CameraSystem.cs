@@ -27,7 +27,7 @@ namespace Cameras.Systems
 
         void ISystem.Update(in SystemContainer systemContainer, in World world, in TimeSpan delta)
         {
-            ComponentQuery<IsCamera> camerasWithoutMatricesQuery = new(world);
+            ComponentQuery<CameraSettings> camerasWithoutMatricesQuery = new(world);
             camerasWithoutMatricesQuery.ExcludeComponent<CameraMatrices>();
             foreach (var r in camerasWithoutMatricesQuery)
             {
@@ -41,7 +41,7 @@ namespace Cameras.Systems
                 operation.Clear();
             }
 
-            ComponentQuery<IsCamera, CameraMatrices, IsViewport, CameraSettings> query = new(world);
+            ComponentQuery<CameraSettings, CameraMatrices, IsViewport, CameraSettings> query = new(world);
             foreach (var r in query)
             {
                 ref CameraSettings settings = ref r.component4;
@@ -56,7 +56,7 @@ namespace Cameras.Systems
             }
         }
 
-        private static void CalculatePerspective(World world, Chunk.Entity<IsCamera, CameraMatrices, IsViewport, CameraSettings> r)
+        private static void CalculatePerspective(World world, Chunk.Entity<CameraSettings, CameraMatrices, IsViewport, CameraSettings> r)
         {
             uint destinationEntity = world.GetReference(r.entity, r.component3.destinationReference);
             if (destinationEntity == default || !world.ContainsEntity(destinationEntity))
@@ -80,7 +80,7 @@ namespace Cameras.Systems
             r.component2 = new(projection, view);
         }
 
-        private static void CalculateOrthographic(World world, Chunk.Entity<IsCamera, CameraMatrices, IsViewport, CameraSettings> r)
+        private static void CalculateOrthographic(World world, Chunk.Entity<CameraSettings, CameraMatrices, IsViewport, CameraSettings> r)
         {
             uint destinationEntity = world.GetReference(r.entity, r.component3.destinationReference);
             if (destinationEntity == default || !world.ContainsEntity(destinationEntity))
