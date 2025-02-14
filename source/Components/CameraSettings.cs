@@ -1,9 +1,7 @@
 ﻿using System;
-using Worlds;
 
 namespace Cameras.Components
 {
-    [Component]
     public struct CameraSettings
     {
         public const float DefaultMinDepth = 0.01f;
