@@ -10,9 +10,9 @@ namespace Cameras.Tests
     {
         static CameraTests()
         {
-            MetadataRegistry.Load<TransformsTypeBank>();
-            MetadataRegistry.Load<RenderingTypeBank>();
-            MetadataRegistry.Load<CamerasTypeBank>();
+            MetadataRegistry.Load<TransformsMetadataBank>();
+            MetadataRegistry.Load<RenderingMetadataBank>();
+            MetadataRegistry.Load<CamerasMetadataBank>();
         }
 
         protected override Schema CreateSchema()
