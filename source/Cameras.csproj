@@ -13,12 +13,12 @@
         <Authors>popcron</Authors>
         <Company>simulation-tree</Company>
         <RepositoryUrl>https://github.com/simulation-tree/cameras</RepositoryUrl>
-        <PackageId/>
+        <PackageId />
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\rendering\source\Rendering.csproj"/>
-        <ProjectReference Include="..\..\transforms\source\Transforms.csproj"/>
+        <ProjectReference Include="..\..\rendering\source\Rendering.csproj" />
+        <ProjectReference Include="..\..\transforms\source\Transforms.csproj" />
         <ProjectReference Include="..\..\types\generator\Types.Generator.csproj">
             <OutputItemType>Analyzer</OutputItemType>
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
