@@ -32,9 +32,9 @@
 
   <ItemGroup>
     <Content Include="bin/Debug/net9.0/Cameras.dll" Pack="true" PackagePath="tools/debug/Cameras.dll" Visible="false"/>
-    <Content Include="bin/Debug/net9.0/Cameras.xml" Pack="true" PackagePath="tools/debug/Cameras.xml" Visible="false"/>
+    <Content Include="bin/Debug/net9.0/Cameras.xml" Pack="true" PackagePath="tools/debug/Cameras.xml" Visible="false" Condition="Exists('bin/Debug/net9.0/Cameras.xml')"/>
     <Content Include="bin/Release/net9.0/Cameras.dll" Pack="true" PackagePath="tools/release/Cameras.dll" Visible="false"/>
-    <Content Include="bin/Release/net9.0/Cameras.xml" Pack="true" PackagePath="tools/release/Cameras.xml" Visible="false"/>
+    <Content Include="bin/Release/net9.0/Cameras.xml" Pack="true" PackagePath="tools/release/Cameras.xml" Visible="false" Condition="Exists('bin/Release/net9.0/Cameras.xml')"/>
     <Content Include="build/Cameras.targets" Pack="true" PackagePath="build/Cameras.targets" Visible="false"/>
   </ItemGroup>
 
