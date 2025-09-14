@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/simulation-tree/cameras</RepositoryUrl>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <OutDir>bin/$(TargetFramework)/$(Configuration)</OutDir>
+    <PackageId>SimulationTree.Cameras</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
